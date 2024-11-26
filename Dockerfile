@@ -1,14 +1,12 @@
-# Use a lightweight JDK image
-FROM amazoncorretto:21.0.3-alpine3.19
-
-# Set working directory inside the container
+# Build stage: Use a Gradle image to build the application
+FROM gradle:jdk21 AS build
 WORKDIR /app
+COPY . .
+RUN gradle build --no-daemon
 
-# Copy the built application JAR file into the container
-COPY build/libs/HumanResourcesApp-0.0.1-SNAPSHOT.jar app.jar
-
-# Expose the port your app will run on (default Spring Boot port is 8080)
+# Run stage: Use a lightweight JDK image to run the app
+FROM amazoncorretto:21.0.3-alpine3.19
+WORKDIR /app
+COPY --from=build /app/build/libs/HumanResourcesApp-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 9090
-
-# Set the default command to run the JAR file
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
