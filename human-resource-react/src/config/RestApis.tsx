@@ -1,7 +1,7 @@
-const server_loadbalancer = 'https://easyhr.store';
+const server_loadbalancer = 'https://easyhr-klzy.onrender.com';
 const server_local = 'http://localhost:9090';
 const server_local_frontend = 'http://localhost:3000';
-const server = server_local; //DONT FORGET THIS
+const server = server_loadbalancer; //DONT FORGET THIS
 const apis = {
     authService: server+'/dev/v1/auth',
     bonusService: server+'/dev/v1/bonus',
