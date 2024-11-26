@@ -8,7 +8,7 @@ WORKDIR /app
 COPY build/libs/HumanResourcesApp-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose the port your app will run on (default Spring Boot port is 8080)
-EXPOSE 8080
+EXPOSE 9090
 
 # Set the default command to run the JAR file
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
