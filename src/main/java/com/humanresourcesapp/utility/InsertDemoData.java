@@ -8,6 +8,10 @@ import com.humanresourcesapp.entities.enums.*;
 import com.humanresourcesapp.services.*;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,10 +27,12 @@ import static com.humanresourcesapp.constants.FrontendPaths.HOME;
 
 @RequiredArgsConstructor
 @Service
+@DependsOn({"companyService", "userService", "authService"})
 public class InsertDemoData
 {
     private final CompanyService companyService;
     private final FeatureService featureService;
+    @Lazy
     private final UserService userService;
     private final BCryptPasswordEncoder passwordEncoder;
     private final AuthService authService;
@@ -44,7 +50,7 @@ public class InsertDemoData
     private final LeaveService leaveService;
 
 
-    @PostConstruct
+    @EventListener(ApplicationReadyEvent.class)
     public void insert()
     {
         insertCompanyDemoData();
