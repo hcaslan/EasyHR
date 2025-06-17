@@ -10,6 +10,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -383,7 +384,7 @@ public class InsertDemoData
         LocalDate currentDate = LocalDate.now();
         if (authService.findByEmail(managerEmail).isEmpty())
         {
-            String encodedPassword = passwordEncoder.bCryptPasswordEncoder().encode(password);
+            String encodedPassword = passwordEncoder.encode(password);
 
             Auth auth = authService.save(Auth.
                     builder()
