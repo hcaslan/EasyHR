@@ -27,7 +27,7 @@ public class InsertDemoData
     private final CompanyService companyService;
     private final FeatureService featureService;
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
     private final AuthService authService;
     private final CommentService commentService;
     private final HolidayService holidayService;
