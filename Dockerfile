@@ -1,10 +1,19 @@
-# Build stage: Use a Gradle image to build the application
-FROM gradle:jdk21 AS build
+# Build stage: Use JDK, not system gradle
+FROM eclipse-temurin:21 AS build
 WORKDIR /app
-COPY . .
-RUN gradle build --no-daemon --stacktrace --info
 
-# Run stage: Use a lightweight JDK image to run the app
+# Copy wrapper first for caching
+COPY gradlew .
+COPY gradle gradle
+RUN chmod +x gradlew
+
+# Copy project
+COPY . .
+
+# Use wrapper (pinned Gradle version)
+RUN ./gradlew build -x test --no-daemon
+
+# Run stage
 FROM amazoncorretto:21.0.3-alpine3.19
 WORKDIR /app
 COPY --from=build /app/build/libs/HumanResourcesApp-0.0.1-SNAPSHOT.jar app.jar
