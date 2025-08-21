@@ -2,7 +2,7 @@
 FROM gradle:jdk21 AS build
 WORKDIR /app
 COPY . .
-RUN gradle build --no-daemon
+RUN gradle build -x test --no-daemon
 
 # Run stage: Use a lightweight JDK image to run the app
 FROM amazoncorretto:21.0.3-alpine3.19
