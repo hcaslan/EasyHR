@@ -10,8 +10,8 @@ RUN chmod +x gradlew
 # Copy project
 COPY . .
 
-# Use wrapper (pinned Gradle version)
-RUN ./gradlew build -x test --no-daemon
+# Use wrapper (pinned Gradle version) - CRITICAL FIX
+RUN ./gradlew clean build -x test --no-daemon --refresh-dependencies
 
 # Run stage
 FROM amazoncorretto:21.0.3-alpine3.19
