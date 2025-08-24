@@ -1,17 +1,12 @@
-# Build stage: Use JDK, not system gradle
-FROM eclipse-temurin:21 AS build
+# Build stage: Use official Gradle image with exact versions
+FROM gradle:8.8-jdk21 AS build
 WORKDIR /app
 
-# Copy wrapper first for caching
-COPY gradlew .
-COPY gradle gradle
-RUN chmod +x gradlew
-
-# Copy project
+# Copy project files
 COPY . .
 
-# Use wrapper (pinned Gradle version) - CRITICAL FIX
-RUN ./gradlew clean build -x test --no-daemon --refresh-dependencies
+# Build using the container's gradle
+RUN gradle clean build -x test --no-daemon --refresh-dependencies
 
 # Run stage
 FROM amazoncorretto:21.0.3-alpine3.19
